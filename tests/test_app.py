@@ -1,8 +1,13 @@
+"""
+This module contains unit tests for the App class, testing its environment
+variable retrieval, REPL exit command handling, and response to unknown commands.
+"""
 import pytest
 
 from app import App
 
 def test_app_get_environment_variable():
+    """Test retrieving the environment variable and checking if it is valid."""
     app = App()
 #   Retrieve the current environment setting
     current_env = app.get_environment_variable('ENVIRONMENT')
@@ -27,13 +32,13 @@ def test_app_start_unknown_command(capfd, monkeypatch):
     monkeypatch.setattr('builtins.input', lambda _: next(inputs))
 
     app = App()
-    
-    with pytest.raises(SystemExit) as excinfo:
+
+    with pytest.raises(SystemExit):
         app.start()
-    
+
     # Optionally, check for specific exit code or message
     # assert excinfo.value.code == expected_exit_code
-    
+
     # Verify that the unknown command was handled as expected
     captured = capfd.readouterr()
     assert "No such command: unknown_command" in captured.out
